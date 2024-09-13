@@ -19,7 +19,8 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Runique Course"
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+rootProject.name = "RuniqueCourse"
 include(":app")
 include(":auth:data")
 include(":auth:domain")
@@ -34,3 +35,4 @@ include(":run:domain")
 include(":run:presentation")
 include(":run:location")
 include(":run:network")
+include(":build-logic:convention")
