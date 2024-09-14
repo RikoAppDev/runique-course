@@ -42,5 +42,9 @@ gradlePlugin {
             id = "runiquecourse.jvm.library"
             implementationClass = "JvmLibraryConventionPlugin"
         }
+        register("jvmKtor") {
+            id = "runiquecourse.jvm.ktor"
+            implementationClass = "JvmKtorConventionPlugin"
+        }
     }
 }
