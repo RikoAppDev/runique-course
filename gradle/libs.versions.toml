@@ -120,3 +120,4 @@ mapsplatform-secrets-plugin = { id = "com.google.android.libraries.mapsplatform.
 
 runiquecourse-android-application = { id = "runiquecourse.android.application", version = "unspecified" }
 runiquecourse-android-application-compose = { id = "runiquecourse.android.application.compose", version = "unspecified" }
+runiquecourse-android-library = { id = "runiquecourse.android.library", version = "unspecified" }
