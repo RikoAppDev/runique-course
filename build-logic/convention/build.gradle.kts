@@ -38,5 +38,9 @@ gradlePlugin {
             id = "runiquecourse.android.room"
             implementationClass = "AndroidRoomConventionPlugin"
         }
+        register("jvmLibrary") {
+            id = "runiquecourse.jvm.library"
+            implementationClass = "JvmLibraryConventionPlugin"
+        }
     }
 }

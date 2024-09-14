@@ -124,6 +124,7 @@ runiquecourse-android-library = { id = "runiquecourse.android.library", version 
 runiquecourse-android-library-compose = { id = "runiquecourse.android.library.compose", version = "unspecified" }
 runiquecourse-android-feature-ui = { id = "runiquecourse.android.feature.ui", version = "unspecified" }
 runiquecourse-android-room = { id = "runiquecourse.android.room", version = "unspecified" }
+runiquecourse-jvm-library = { id = "runiquecourse.jvm.library", version = "unspecified" }
 
 [bundles]
 compose = [
