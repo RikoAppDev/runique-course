@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.runiquecourse.android.library)
+    alias(libs.plugins.runiquecourse.android.room)
 }
 
 android {
