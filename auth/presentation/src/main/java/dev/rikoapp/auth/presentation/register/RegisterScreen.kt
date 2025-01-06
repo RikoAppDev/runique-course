@@ -47,9 +47,9 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun RegisterScreenRoot(
-    onSignInnClick: () -> Unit,
+    onSignInClick: () -> Unit,
     onSuccessfulRegistration: () -> Unit,
-    viewModel: RegisterViewmodel = koinViewModel()
+    viewModel: RegisterViewModel = koinViewModel()
 ) {
     RegisterScreen(
         state = viewModel.state,

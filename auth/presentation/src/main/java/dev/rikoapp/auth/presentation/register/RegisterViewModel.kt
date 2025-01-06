@@ -13,7 +13,7 @@ import dev.rikoapp.auth.domain.UserDataValidator
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-class RegisterViewmodel(
+class RegisterViewModel(
     private val userDataValidator: UserDataValidator
 ) : ViewModel() {
     var state by mutableStateOf(RegisterState())
@@ -22,16 +22,21 @@ class RegisterViewmodel(
     init {
         state.email.textAsFlow()
             .onEach { email ->
+                val isValidEmail = userDataValidator.isValidEmail(email.toString())
                 state = state.copy(
-                    isEmailValid = userDataValidator.isValidEmail(email.toString())
+                    isEmailValid = userDataValidator.isValidEmail(email.toString()),
+                    canRegister = isValidEmail && state.passwordValidationState.isValidPassword && !state.isRegistering
                 )
             }
             .launchIn(viewModelScope)
 
-        state.email.textAsFlow()
+        state.password.textAsFlow()
             .onEach { password ->
+                val passwordValidationState =
+                    userDataValidator.validatePassword(password.toString())
                 state = state.copy(
-                    passwordValidationState = userDataValidator.validatePassword(password.toString())
+                    passwordValidationState = userDataValidator.validatePassword(password.toString()),
+                    canRegister = state.isEmailValid && passwordValidationState.isValidPassword && !state.isRegistering
                 )
             }
             .launchIn(viewModelScope)

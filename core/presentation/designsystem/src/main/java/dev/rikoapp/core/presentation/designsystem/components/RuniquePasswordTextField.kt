@@ -138,7 +138,7 @@ fun RuniquePasswordTextField(
                     }
                     IconButton(onClick = onTogglePasswordVisibility) {
                         Icon(
-                            imageVector = if (isPasswordVisible) {
+                            imageVector = if (!isPasswordVisible) {
                                 EyeClosedIcon
                             } else EyeOpenedIcon,
                             contentDescription = if (isPasswordVisible) {
