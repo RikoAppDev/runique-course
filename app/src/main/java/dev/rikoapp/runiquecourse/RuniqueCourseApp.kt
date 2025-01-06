@@ -3,6 +3,7 @@ package dev.rikoapp.runiquecourse
 import android.app.Application
 import dev.rikoapp.auth.data.di.authDataModule
 import dev.rikoapp.auth.presentation.di.authViewModelModule
+import dev.rikoapp.core.data.di.coreDataModule
 import dev.rikoapp.runiquecourse.di.appModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -22,7 +23,8 @@ class RuniqueCourseApp : Application() {
             modules(
                 authDataModule,
                 authViewModelModule,
-                appModule
+                appModule,
+                coreDataModule
             )
         }
     }
