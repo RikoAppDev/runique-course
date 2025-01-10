@@ -40,7 +40,6 @@ import dev.rikoapp.core.presentation.designsystem.EmailIcon
 import dev.rikoapp.core.presentation.designsystem.Poppins
 import dev.rikoapp.core.presentation.designsystem.RuniqueCourseTheme
 import dev.rikoapp.core.presentation.designsystem.RuniqueDarkRed
-import dev.rikoapp.core.presentation.designsystem.RuniqueGray
 import dev.rikoapp.core.presentation.designsystem.RuniqueGreen
 import dev.rikoapp.core.presentation.designsystem.components.GradientBackground
 import dev.rikoapp.core.presentation.designsystem.components.RuniqueActionButton
@@ -108,7 +107,7 @@ private fun RegisterScreen(
                 withStyle(
                     style = SpanStyle(
                         fontFamily = Poppins,
-                        color = RuniqueGray
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 ) {
                     append(stringResource(id = R.string.already_have_an_account) + " ")
