@@ -9,6 +9,7 @@ import androidx.navigation.compose.navigation
 import dev.rikoapp.auth.presentation.intro.IntroScreenRoot
 import dev.rikoapp.auth.presentation.login.LoginScreenRoot
 import dev.rikoapp.auth.presentation.register.RegisterScreenRoot
+import dev.rikoapp.run.presentation.active_run.ActiveRunScreenRoot
 import dev.rikoapp.run.presentation.run_overview.RunOverviewScreenRoot
 
 @Composable
@@ -84,7 +85,14 @@ private fun NavGraphBuilder.runGraph(navController: NavHostController) {
         route = "run"
     ) {
         composable("run_overview") {
-            RunOverviewScreenRoot()
+            RunOverviewScreenRoot(
+                onStartRunClick = {
+                    navController.navigate("active_run")
+                }
+            )
+        }
+        composable("active_run") {
+            ActiveRunScreenRoot()
         }
     }
 }

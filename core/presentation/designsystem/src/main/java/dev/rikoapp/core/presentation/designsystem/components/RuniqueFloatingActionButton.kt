@@ -1,6 +1,7 @@
 package dev.rikoapp.core.presentation.designsystem.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -30,7 +31,8 @@ fun RuniqueFloatingActionButton(
         modifier = Modifier
             .size(75.dp)
             .clip(CircleShape)
-            .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)),
+            .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.3f))
+            .clickable(onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
         Box(
@@ -38,7 +40,8 @@ fun RuniqueFloatingActionButton(
                 .size(50.dp)
                 .clip(CircleShape)
                 .background(MaterialTheme.colorScheme.primary)
-                .padding(12.dp)
+                .padding(12.dp),
+            contentAlignment = Alignment.Center
         ) {
             Icon(
                 imageVector = icon,
