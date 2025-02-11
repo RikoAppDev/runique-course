@@ -4,14 +4,20 @@ import android.app.Application
 import dev.rikoapp.auth.data.di.authDataModule
 import dev.rikoapp.auth.presentation.di.authViewModelModule
 import dev.rikoapp.core.data.di.coreDataModule
-import dev.rikoapp.run.presentation.di.runViewModelModule
+import dev.rikoapp.run.location.di.locationModule
+import dev.rikoapp.run.presentation.di.runPresentationModule
 import dev.rikoapp.runiquecourse.di.appModule
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import timber.log.Timber
 
 class RuniqueCourseApp : Application() {
+
+    val applicationScope = CoroutineScope(SupervisorJob())
+
     override fun onCreate() {
         super.onCreate()
         if (BuildConfig.DEBUG) {
@@ -26,7 +32,8 @@ class RuniqueCourseApp : Application() {
                 authViewModelModule,
                 appModule,
                 coreDataModule,
-                runViewModelModule
+                runPresentationModule,
+                locationModule
             )
         }
     }
