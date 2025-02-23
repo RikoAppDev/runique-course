@@ -102,6 +102,7 @@ class ActiveRunViewModel(
             }
 
             is ActiveRunAction.SubmitLocationPermissionInfo -> {
+                hasLocationPermission.value = action.acceptedLocationPermission
                 state = state.copy(
                     showLocationRationale = action.showLocationPermissionRationale
                 )
