@@ -4,6 +4,7 @@ import android.app.Application
 import dev.rikoapp.auth.data.di.authDataModule
 import dev.rikoapp.auth.presentation.di.authViewModelModule
 import dev.rikoapp.core.data.di.coreDataModule
+import dev.rikoapp.core.database.di.databaseModule
 import dev.rikoapp.run.location.di.locationModule
 import dev.rikoapp.run.presentation.di.runPresentationModule
 import dev.rikoapp.runiquecourse.di.appModule
@@ -33,7 +34,8 @@ class RuniqueCourseApp : Application() {
                 appModule,
                 coreDataModule,
                 runPresentationModule,
-                locationModule
+                locationModule,
+                databaseModule
             )
         }
     }
