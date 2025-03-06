@@ -6,6 +6,7 @@ import dev.rikoapp.auth.presentation.di.authViewModelModule
 import dev.rikoapp.core.data.di.coreDataModule
 import dev.rikoapp.core.database.di.databaseModule
 import dev.rikoapp.run.location.di.locationModule
+import dev.rikoapp.run.network.di.networkModule
 import dev.rikoapp.run.presentation.di.runPresentationModule
 import dev.rikoapp.runiquecourse.di.appModule
 import kotlinx.coroutines.CoroutineScope
@@ -35,7 +36,8 @@ class RuniqueCourseApp : Application() {
                 coreDataModule,
                 runPresentationModule,
                 locationModule,
-                databaseModule
+                databaseModule,
+                networkModule
             )
         }
     }
