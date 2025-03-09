@@ -5,6 +5,7 @@ import dev.rikoapp.auth.data.di.authDataModule
 import dev.rikoapp.auth.presentation.di.authViewModelModule
 import dev.rikoapp.core.data.di.coreDataModule
 import dev.rikoapp.core.database.di.databaseModule
+import dev.rikoapp.run.data.di.runDataModule
 import dev.rikoapp.run.location.di.locationModule
 import dev.rikoapp.run.network.di.networkModule
 import dev.rikoapp.run.presentation.di.runPresentationModule
@@ -13,6 +14,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
+import org.koin.androidx.workmanager.koin.workManagerFactory
 import org.koin.core.context.startKoin
 import timber.log.Timber
 
@@ -29,6 +31,7 @@ class RuniqueCourseApp : Application() {
         startKoin {
             androidLogger()
             androidContext(this@RuniqueCourseApp)
+            workManagerFactory()
             modules(
                 authDataModule,
                 authViewModelModule,
@@ -37,7 +40,8 @@ class RuniqueCourseApp : Application() {
                 runPresentationModule,
                 locationModule,
                 databaseModule,
-                networkModule
+                networkModule,
+                runDataModule
             )
         }
     }
