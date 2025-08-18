@@ -1,6 +1,7 @@
 package dev.rikoapp.runiquecourse
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -139,12 +140,21 @@ class MainActivity : ComponentActivity() {
 
     private fun installOrStartAnalyticsFeature() {
         if (splitInstallManager.installedModules.contains("analytics_feature")) {
-            Intent()
-                .setClassName(
-                    packageName,
-                    "dev.rikoapp.analytics.analytics_feature.AnalyticsActivity"
+            val intent = Intent().setClassName(
+                packageName,
+                "dev.rikoapp.analytics.analytics_feature.AnalyticsActivity"
+            )
+            startActivity(intent)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                overrideActivityTransition(
+                    OVERRIDE_TRANSITION_OPEN,
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left
                 )
-                .also(::startActivity)
+            } else {
+                @Suppress("DEPRECATION")
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            }
 
             return
         }
