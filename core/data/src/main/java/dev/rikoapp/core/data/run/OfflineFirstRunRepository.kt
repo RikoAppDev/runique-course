@@ -15,9 +15,8 @@ import dev.rikoapp.core.domain.util.EmptyDataResult
 import dev.rikoapp.core.domain.util.Result
 import dev.rikoapp.core.domain.util.asEmptyDataResult
 import io.ktor.client.HttpClient
-import io.ktor.client.plugins.auth.Auth
+import io.ktor.client.plugins.auth.authProvider
 import io.ktor.client.plugins.auth.providers.BearerAuthProvider
-import io.ktor.client.plugins.plugin
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -166,9 +165,7 @@ class OfflineFirstRunRepository(
             route = "/logout"
         ).asEmptyDataResult()
 
-        client.plugin(Auth).providers.filterIsInstance<BearerAuthProvider>()
-            .firstOrNull()
-            ?.clearToken()
+        client.authProvider<BearerAuthProvider>()?.clearToken()
 
         return result
     }

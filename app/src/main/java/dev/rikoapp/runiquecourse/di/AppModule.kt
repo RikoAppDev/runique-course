@@ -7,7 +7,7 @@ import dev.rikoapp.runiquecourse.MainViewModel
 import dev.rikoapp.runiquecourse.RuniqueCourseApp
 import kotlinx.coroutines.CoroutineScope
 import org.koin.android.ext.koin.androidApplication
-import org.koin.androidx.viewmodel.dsl.viewModelOf
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 val appModule = module {
