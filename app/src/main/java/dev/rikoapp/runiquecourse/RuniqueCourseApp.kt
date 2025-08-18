@@ -1,6 +1,8 @@
 package dev.rikoapp.runiquecourse
 
 import android.app.Application
+import android.content.Context
+import com.google.android.play.core.splitcompat.SplitCompat
 import dev.rikoapp.auth.data.di.authDataModule
 import dev.rikoapp.auth.presentation.di.authViewModelModule
 import dev.rikoapp.core.data.di.coreDataModule
@@ -44,5 +46,10 @@ class RuniqueCourseApp : Application() {
                 runDataModule
             )
         }
+    }
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        SplitCompat.install(this)
     }
 }

@@ -18,14 +18,15 @@ import dev.rikoapp.run.presentation.run_overview.RunOverviewScreenRoot
 @Composable
 fun NavigationRoot(
     navController: NavHostController,
-    isLoggedIn: Boolean
+    isLoggedIn: Boolean,
+    onAnalyticsClick: () -> Unit
 ) {
     NavHost(
         navController = navController,
         startDestination = if (isLoggedIn) "run" else "auth"
     ) {
         authGraph(navController)
-        runGraph(navController)
+        runGraph(navController, onAnalyticsClick)
     }
 }
 
@@ -82,7 +83,10 @@ private fun NavGraphBuilder.authGraph(navController: NavHostController) {
     }
 }
 
-private fun NavGraphBuilder.runGraph(navController: NavHostController) {
+private fun NavGraphBuilder.runGraph(
+    navController: NavHostController,
+    onAnalyticsClick: () -> Unit
+) {
     navigation(
         startDestination = "run_overview",
         route = "run"
@@ -92,6 +96,7 @@ private fun NavGraphBuilder.runGraph(navController: NavHostController) {
                 onStartRunClick = {
                     navController.navigate("active_run")
                 },
+                onAnalyticsClick = onAnalyticsClick,
                 onLogoutClick = {
                     navController.navigate("auth") {
                         popUpTo("run") {
