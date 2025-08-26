@@ -50,5 +50,13 @@ gradlePlugin {
             id = "runiquecourse.jvm.ktor"
             implementationClass = "JvmKtorConventionPlugin"
         }
+        register("jvmJUnit5") {
+            id = "runiquecourse.jvm.junit5"
+            implementationClass = "JvmJUnit5ConventionPlugin"
+        }
+        register("androidJUnit5") {
+            id = "runiquecourse.android.junit5"
+            implementationClass = "AndroidJUnit5ConventionPlugin"
+        }
     }
 }

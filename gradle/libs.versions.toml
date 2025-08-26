@@ -37,6 +37,15 @@ secretsPlugin = "2.0.1"
 playServicesMaps = "19.2.0"
 annotation = "1.9.1"
 
+junit5 = "5.13.4"
+junit5-plugin = "1.13.1.0"
+junit5-compose = "1.8.0"
+mockk = "1.14.5"
+assertk = "0.28.1"
+turbine = "1.2.1"
+composeUiTestManifest = "1.9.0"
+coroutines-test = "1.10.2"
+
 # Project versions
 projectApplicationId = "dev.rikoapp.runiquecourse"
 projectVersionName = "1.0"
@@ -97,6 +106,18 @@ play-services-maps = { group = "com.google.android.gms", name = "play-services-m
 google-maps-android-utils-ktx = { module = "com.google.maps.android:maps-utils-ktx", version.ref = "mapsUtils" }
 annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
 
+# Test dependencies
+junit5-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit5" }
+junit5-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit5" }
+junit5-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit5" }
+junit5-android-test-compose = { module = "de.mannodermaus.junit5:android-test-compose", version.ref = "junit5-compose" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+assertk = { module = "com.willowtreeapps.assertk:assertk", version.ref = "assertk" }
+ktor-client-mock = { module = "io.ktor:ktor-client-mock", version.ref = "ktor" }
+turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
+coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines-test" }
+
 # Gradle
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 android-tools-common = { group = "com.android.tools", name = "common", version.ref = "androidTools" }
@@ -115,6 +136,7 @@ jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "org-jet
 android-dynamic-feature = { id = "com.android.dynamic-feature", version.ref = "agp" }
 mapsplatform-secrets-plugin = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secretsPlugin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+junit5 = { id = "de.mannodermaus.android-junit5", version.ref = "junit5-plugin" }
 
 runiquecourse-android-application = { id = "runiquecourse.android.application", version = "unspecified" }
 runiquecourse-android-application-compose = { id = "runiquecourse.android.application.compose", version = "unspecified" }
@@ -125,6 +147,8 @@ runiquecourse-android-room = { id = "runiquecourse.android.room", version = "uns
 runiquecourse-android-dynamic-feature = { id = "runiquecourse.android.dynamic.feature", version = "unspecified" }
 runiquecourse-jvm-library = { id = "runiquecourse.jvm.library", version = "unspecified" }
 runiquecourse-jvm-ktor = { id = "runiquecourse.jvm.ktor", version = "unspecified" }
+runiquecourse-jvm-junit5 = { id = "runiquecourse.jvm.junit5", version = "unspecified" }
+runiquecourse-android-junit5 = { id = "runiquecourse.android.junit5", version = "unspecified" }
 
 [bundles]
 compose = [

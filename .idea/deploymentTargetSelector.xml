@@ -4,10 +4,10 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-02-23T18:09:18.726467800Z">
+        <DropdownSelection timestamp="2025-08-23T13:56:32.179712300Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="PhysicalDevice" identifier="serial=RF8N82DRCCK" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\frede\.android\avd\XR_Headset.avd" />
             </handle>
           </Target>
         </DropdownSelection>
