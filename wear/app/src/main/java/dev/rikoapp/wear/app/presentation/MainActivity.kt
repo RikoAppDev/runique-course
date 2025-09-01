@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.wear.compose.material3.Button
 import androidx.wear.compose.material3.Text
-import dev.rikoapp.wear.app.presentation.theme.RuniqueCourseTheme
+import dev.rikoapp.core.presentation.designsystem_wear.RuniqueCourseTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

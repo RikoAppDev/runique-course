@@ -24,4 +24,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.core.ktx)
     implementation(libs.bundles.koin)
+
+    implementation(projects.core.presentation.designsystemWear)
 }
