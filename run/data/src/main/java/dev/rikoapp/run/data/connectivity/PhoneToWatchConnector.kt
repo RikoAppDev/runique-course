@@ -3,16 +3,29 @@ package dev.rikoapp.run.data.connectivity
 import dev.rikoapp.core.connectivity.domain.DeviceNode
 import dev.rikoapp.core.connectivity.domain.DeviceType
 import dev.rikoapp.core.connectivity.domain.NodeDiscovery
+import dev.rikoapp.core.connectivity.domain.messaging.MessagingAction
+import dev.rikoapp.core.connectivity.domain.messaging.MessagingClient
+import dev.rikoapp.core.connectivity.domain.messaging.MessagingError
+import dev.rikoapp.core.domain.util.EmptyDataResult
 import dev.rikoapp.run.domain.WatchConnector
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.shareIn
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class PhoneToWatchConnector(
     nodeDiscovery: NodeDiscovery,
-    applicationScope: CoroutineScope
+    applicationScope: CoroutineScope,
+    private val messagingClient: MessagingClient
 ) : WatchConnector {
 
     private val _connectedNode = MutableStateFlow<DeviceNode?>(null)
@@ -20,16 +33,49 @@ class PhoneToWatchConnector(
 
     private val isTrackable = MutableStateFlow(false)
 
-    val messagingActions = nodeDiscovery
+    override val messagingActions: Flow<MessagingAction> = nodeDiscovery
         .observeConnectedDevices(DeviceType.PHONE)
-        .onEach { connectedDevices ->
+        .flatMapLatest { connectedDevices ->
             val node = connectedDevices.firstOrNull()
 
             if (node != null && node.isNearby) {
                 _connectedNode.value = node
+                messagingClient.connectToNode(node.id)
+            } else flowOf()
+        }
+        .onEach { action ->
+            if (action is MessagingAction.ConnectionRequest) {
+                if (isTrackable.value) {
+                    sendActionToWatch(MessagingAction.Trackable)
+                } else {
+                    sendActionToWatch(MessagingAction.Untrackable)
+                }
             }
         }
-        .launchIn(applicationScope)
+        .shareIn(
+            applicationScope,
+            SharingStarted.Eagerly
+        )
+
+    init {
+        _connectedNode
+            .filterNotNull()
+            .flatMapLatest { isTrackable }
+            .onEach { isTrackable ->
+                sendActionToWatch(MessagingAction.ConnectionRequest)
+                val action = if (isTrackable) {
+                    MessagingAction.Trackable
+                } else {
+                    MessagingAction.Untrackable
+                }
+                sendActionToWatch(action)
+            }
+            .launchIn(applicationScope)
+    }
+
+    override suspend fun sendActionToWatch(action: MessagingAction): EmptyDataResult<MessagingError> {
+        return messagingClient.sendOrQueueAction(action)
+    }
 
     override fun setIsTrackable(isTrackable: Boolean) {
         this.isTrackable.value = isTrackable
