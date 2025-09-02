@@ -3,6 +3,7 @@ package dev.rikoapp.wear.run.presentation
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -40,6 +41,7 @@ import dev.rikoapp.core.presentation.designsystem.FinishIcon
 import dev.rikoapp.core.presentation.designsystem.PauseIcon
 import dev.rikoapp.core.presentation.designsystem.StartIcon
 import dev.rikoapp.core.presentation.designsystem_wear.RuniqueCourseTheme
+import dev.rikoapp.presentation.ui.ObserveAsEvents
 import dev.rikoapp.presentation.ui.formated
 import dev.rikoapp.presentation.ui.toFormattedHeartRate
 import dev.rikoapp.presentation.ui.toFormattedKm
@@ -51,6 +53,22 @@ import kotlin.time.Duration
 fun TrackerScreenRoot(
     viewModel: TrackerViewModel = koinViewModel()
 ) {
+    val context = LocalContext.current
+
+    ObserveAsEvents(viewModel.events) { event ->
+        when (event) {
+            is TrackerEvent.Error -> {
+                Toast.makeText(
+                    context,
+                    event.message.asString(context),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+
+            TrackerEvent.RunFinished -> Unit
+        }
+    }
+
     TrackerScreen(
         state = viewModel.state,
         onAction = viewModel::onAction
