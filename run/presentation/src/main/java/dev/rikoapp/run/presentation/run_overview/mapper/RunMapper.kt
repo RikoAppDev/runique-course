@@ -2,6 +2,7 @@ package dev.rikoapp.run.presentation.run_overview.mapper
 
 import dev.rikoapp.core.domain.run.Run
 import dev.rikoapp.presentation.ui.formated
+import dev.rikoapp.presentation.ui.toFormattedHeartRate
 import dev.rikoapp.presentation.ui.toFormattedKm
 import dev.rikoapp.presentation.ui.toFormattedKmh
 import dev.rikoapp.presentation.ui.toFormattedMeters
@@ -28,6 +29,8 @@ fun Run.toRunUi(): RunUi {
         maxSpeed = maxSpeedKmh.toFormattedKmh(),
         pace = duration.toFormattedPace(distanceKm),
         totalElevation = totalElevationMeters.toFormattedMeters(),
-        mapPictureUrl = mapPictureUrl
+        mapPictureUrl = mapPictureUrl,
+        avgHeartRate = avgHeartRate.toFormattedHeartRate(),
+        maxHeartRate = maxHeartRate.toFormattedHeartRate()
     )
 }
