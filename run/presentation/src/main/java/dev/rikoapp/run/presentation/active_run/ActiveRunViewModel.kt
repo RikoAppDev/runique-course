@@ -13,22 +13,26 @@ import dev.rikoapp.core.domain.util.Result
 import dev.rikoapp.presentation.ui.asUiText
 import dev.rikoapp.run.domain.LocationDataCalculator
 import dev.rikoapp.run.domain.RunningTracker
+import dev.rikoapp.run.domain.WatchConnector
 import dev.rikoapp.run.presentation.active_run.service.ActiveRunService
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
 class ActiveRunViewModel(
     private val runningTracker: RunningTracker,
-    private val runRepository: RunRepository
+    private val runRepository: RunRepository,
+    private val watchConnector: WatchConnector
 ) : ViewModel() {
     var state by mutableStateOf(
         ActiveRunState(
@@ -57,6 +61,14 @@ class ActiveRunViewModel(
     }.stateIn(viewModelScope, SharingStarted.Lazily, false)
 
     init {
+        watchConnector
+            .connectedDevice
+            .filterNotNull()
+            .onEach {
+                Timber.d("New device detected: ${it.displayName}")
+            }
+            .launchIn(viewModelScope)
+
         hasLocationPermission
             .onEach { hasPermission ->
                 if (hasPermission) {
