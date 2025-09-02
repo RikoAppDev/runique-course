@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import dev.rikoapp.core.notification.ActiveRunService
 import dev.rikoapp.core.presentation.designsystem_wear.RuniqueCourseTheme
 import dev.rikoapp.wear.run.presentation.TrackerScreenRoot
 
@@ -15,7 +16,21 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             RuniqueCourseTheme {
-                TrackerScreenRoot()
+                TrackerScreenRoot(
+                    onServiceToggle = { shouldStartRunning ->
+                        if (shouldStartRunning) {
+                            startService(
+                                ActiveRunService.createStartIntent(
+                                    applicationContext, this::class.java
+                                )
+                            )
+                        } else {
+                            startService(
+                                ActiveRunService.createStopIntent(applicationContext)
+                            )
+                        }
+                    }
+                )
             }
         }
     }

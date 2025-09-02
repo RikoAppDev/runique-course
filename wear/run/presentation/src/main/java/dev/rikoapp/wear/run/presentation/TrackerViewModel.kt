@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.rikoapp.core.connectivity.domain.messaging.MessagingAction
 import dev.rikoapp.core.domain.util.Result
+import dev.rikoapp.core.notification.ActiveRunService
 import dev.rikoapp.wear.run.domain.ExerciseTracker
 import dev.rikoapp.wear.run.domain.PhoneConnector
 import dev.rikoapp.wear.run.domain.RunningTracker
@@ -29,7 +30,13 @@ class TrackerViewModel(
     private val runningTracker: RunningTracker
 ) : ViewModel() {
 
-    var state by mutableStateOf(TrackerState())
+    var state by mutableStateOf(
+        TrackerState(
+            hasStartedRunning = ActiveRunService.isServiceActive.value,
+            isRunActive = ActiveRunService.isServiceActive.value && runningTracker.isTracking.value,
+            isTrackable = ActiveRunService.isServiceActive.value
+        )
+    )
         private set
 
     val hasBodySensorPermission = MutableStateFlow(false)

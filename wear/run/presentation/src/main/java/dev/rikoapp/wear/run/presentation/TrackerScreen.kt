@@ -20,6 +20,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -28,6 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.wear.compose.material3.FilledTonalIconButton
 import androidx.wear.compose.material3.Icon
 import androidx.wear.compose.material3.IconButtonDefaults
@@ -36,6 +38,7 @@ import androidx.wear.compose.material3.OutlinedIconButton
 import androidx.wear.compose.material3.Text
 import androidx.wear.compose.ui.tooling.preview.WearPreviewDevices
 import androidx.wear.compose.ui.tooling.preview.WearPreviewSquare
+import dev.rikoapp.core.notification.ActiveRunService
 import dev.rikoapp.core.presentation.designsystem.ExclamationMarkIcon
 import dev.rikoapp.core.presentation.designsystem.FinishIcon
 import dev.rikoapp.core.presentation.designsystem.PauseIcon
@@ -51,9 +54,19 @@ import kotlin.time.Duration
 
 @Composable
 fun TrackerScreenRoot(
+    onServiceToggle: (isServiceRunning: Boolean) -> Unit,
     viewModel: TrackerViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
+    val state = viewModel.state
+
+    val isServiceActive by ActiveRunService.isServiceActive.collectAsStateWithLifecycle()
+
+    LaunchedEffect(state.isRunActive, state.hasStartedRunning, isServiceActive) {
+        if (state.isRunActive && !isServiceActive) {
+            onServiceToggle(true)
+        }
+    }
 
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
@@ -65,7 +78,9 @@ fun TrackerScreenRoot(
                 ).show()
             }
 
-            TrackerEvent.RunFinished -> Unit
+            TrackerEvent.RunFinished -> {
+                onServiceToggle(false)
+            }
         }
     }
 
@@ -104,12 +119,24 @@ fun TrackerScreen(
             true
         }
 
+        val hasForegroundHealthServicePermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.FOREGROUND_SERVICE_HEALTH
+            ) == PackageManager.PERMISSION_GRANTED
+        } else {
+            true
+        }
+
         val permissions = mutableListOf<String>()
         if (!hasBodySensorPermission) {
             permissions.add(Manifest.permission.BODY_SENSORS)
         }
         if (!hasNotificationPermission && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             permissions.add(Manifest.permission.POST_NOTIFICATIONS)
+        }
+        if (!hasForegroundHealthServicePermission && Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            permissions.add(Manifest.permission.FOREGROUND_SERVICE_HEALTH)
         }
 
         permissionLauncher.launch(permissions.toTypedArray())
