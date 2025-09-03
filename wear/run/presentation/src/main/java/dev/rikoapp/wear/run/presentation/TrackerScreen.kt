@@ -48,6 +48,8 @@ import dev.rikoapp.presentation.ui.ObserveAsEvents
 import dev.rikoapp.presentation.ui.formated
 import dev.rikoapp.presentation.ui.toFormattedHeartRate
 import dev.rikoapp.presentation.ui.toFormattedKm
+import dev.rikoapp.wear.run.presentation.ambient.AmbientObserver
+import dev.rikoapp.wear.run.presentation.ambient.ambientMode
 import dev.rikoapp.wear.run.presentation.composables.RunDataCard
 import org.koin.androidx.compose.koinViewModel
 import kotlin.time.Duration
@@ -119,14 +121,26 @@ fun TrackerScreen(
             true
         }
 
-        val hasForegroundHealthServicePermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            ContextCompat.checkSelfPermission(
-                context,
-                Manifest.permission.FOREGROUND_SERVICE_HEALTH
-            ) == PackageManager.PERMISSION_GRANTED
-        } else {
-            true
-        }
+        val hasForegroundServicePermission = ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.FOREGROUND_SERVICE
+        ) == PackageManager.PERMISSION_GRANTED
+
+        val hasForegroundHealthServicePermission =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                ContextCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.FOREGROUND_SERVICE_HEALTH
+                ) == PackageManager.PERMISSION_GRANTED
+            } else {
+                true
+            }
+
+        val hasActivityRecognitionPermission = ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.ACTIVITY_RECOGNITION
+        ) == PackageManager.PERMISSION_GRANTED
+
 
         val permissions = mutableListOf<String>()
         if (!hasBodySensorPermission) {
@@ -135,18 +149,34 @@ fun TrackerScreen(
         if (!hasNotificationPermission && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             permissions.add(Manifest.permission.POST_NOTIFICATIONS)
         }
+        if (!hasForegroundServicePermission) {
+            permissions.add(Manifest.permission.FOREGROUND_SERVICE)
+        }
         if (!hasForegroundHealthServicePermission && Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             permissions.add(Manifest.permission.FOREGROUND_SERVICE_HEALTH)
+        }
+        if (!hasActivityRecognitionPermission) {
+            permissions.add(Manifest.permission.ACTIVITY_RECOGNITION)
         }
 
         permissionLauncher.launch(permissions.toTypedArray())
     }
 
+    AmbientObserver(
+        onEnterAmbient = {
+            onAction(TrackerAction.OnEnterAmbientMode(it.burnInProtectionRequired))
+        },
+        onExitAmbient = {
+            onAction(TrackerAction.OnExitAmbientMode)
+        }
+    )
+
     if (state.isConnectedPhoneNearby) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background),
+                .background(MaterialTheme.colorScheme.background)
+                .ambientMode(state.isAmbientMode, state.burnInProtectionRequired),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
