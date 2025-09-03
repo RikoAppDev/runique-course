@@ -5,6 +5,7 @@ import android.content.Context
 import com.google.android.play.core.splitcompat.SplitCompat
 import dev.rikoapp.auth.data.di.authDataModule
 import dev.rikoapp.auth.presentation.di.authViewModelModule
+import dev.rikoapp.core.connectivity.data.di.coreConnectivityDataModule
 import dev.rikoapp.core.data.di.coreDataModule
 import dev.rikoapp.core.database.di.databaseModule
 import dev.rikoapp.run.data.di.runDataModule
@@ -43,7 +44,8 @@ class RuniqueCourseApp : Application() {
                 locationModule,
                 databaseModule,
                 networkModule,
-                runDataModule
+                runDataModule,
+                coreConnectivityDataModule
             )
         }
     }

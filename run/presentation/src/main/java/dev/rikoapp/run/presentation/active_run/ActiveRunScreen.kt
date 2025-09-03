@@ -20,11 +20,14 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dev.rikoapp.core.notification.ActiveRunService
 import dev.rikoapp.core.presentation.designsystem.RuniqueCourseTheme
 import dev.rikoapp.core.presentation.designsystem.StartIcon
 import dev.rikoapp.core.presentation.designsystem.StopIcon
@@ -38,7 +41,6 @@ import dev.rikoapp.presentation.ui.ObserveAsEvents
 import dev.rikoapp.run.presentation.R
 import dev.rikoapp.run.presentation.active_run.components.RunDataCard
 import dev.rikoapp.run.presentation.active_run.maps.TrackerMap
-import dev.rikoapp.run.presentation.active_run.service.ActiveRunService
 import dev.rikoapp.run.presentation.util.hasLocationPermission
 import dev.rikoapp.run.presentation.util.hasNotificationPermission
 import dev.rikoapp.run.presentation.util.shouldShowLocationPermissionRationale
@@ -150,8 +152,9 @@ private fun ActiveRunScreen(
         }
     }
 
-    LaunchedEffect(key1 = state.shouldTrack) {
-        if (context.hasLocationPermission() && state.shouldTrack && !ActiveRunService.isServiceActive) {
+    val isServiceActive by ActiveRunService.isServiceActive.collectAsStateWithLifecycle()
+    LaunchedEffect(key1 = state.shouldTrack, isServiceActive) {
+        if (context.hasLocationPermission() && state.shouldTrack && !isServiceActive) {
             onServiceToggle(true)
         }
     }

@@ -112,6 +112,23 @@ private fun AnalyticsDashboardScreen(
                         .padding(horizontal = 16.dp)
                 ) {
                     AnalyticsCard(
+                        title = stringResource(id = R.string.highest_heart_rate),
+                        value = state.maxHeartRate,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Spacer(modifier = Modifier.width(16.dp))
+                    AnalyticsCard(
+                        title = stringResource(id = R.string.average_heart_rate),
+                        value = state.avgHeartRate,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                ) {
+                    AnalyticsCard(
                         title = stringResource(id = R.string.average_pace_per_run),
                         value = state.avgPace,
                         modifier = Modifier.weight(1f)
@@ -132,7 +149,9 @@ private fun AnalyticsDashboardScreenPreview() {
                 totalTimeRun = "0d 0h 0m",
                 fastestEverRun = "143.9 km/h",
                 avgDistance = "0.2 km",
-                avgPace = "07:10 min/km"
+                avgPace = "07:10 min/km",
+                avgHeartRate = "120 bpm",
+                maxHeartRate = "215 bpm"
             ),
             onAction = {}
         )
