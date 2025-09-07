@@ -29,7 +29,7 @@ class PhoneToWatchConnectorFake : WatchConnector {
         get() = _messagingActions.asSharedFlow()
 
     override suspend fun sendActionToWatch(action: MessagingAction): EmptyDataResult<MessagingError> {
-        return if (sendError != null) {
+        return if (sendError == null) {
             Result.Success(Unit)
         } else {
             Result.Error(sendError!!)
