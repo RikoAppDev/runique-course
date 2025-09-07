@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.runiquecourse.android.application.compose)
     alias(libs.plugins.runiquecourse.jvm.ktor)
+    alias(libs.plugins.runiquecourse.android.junit5)
 }
 
 android {
