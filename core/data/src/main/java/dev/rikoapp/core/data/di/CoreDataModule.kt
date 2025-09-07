@@ -5,13 +5,14 @@ import dev.rikoapp.core.data.networking.HttpClientFactory
 import dev.rikoapp.core.data.run.OfflineFirstRunRepository
 import dev.rikoapp.core.domain.SessionStorage
 import dev.rikoapp.core.domain.run.RunRepository
+import io.ktor.client.engine.cio.CIO
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val coreDataModule = module {
     single {
-        HttpClientFactory(get()).build()
+        HttpClientFactory(get()).build(CIO.create())
     }
     singleOf(::EncryptedSessionStorage).bind<SessionStorage>()
 
